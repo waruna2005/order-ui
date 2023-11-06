@@ -1,0 +1,12 @@
+.app-logo {
+    display: inline;
+    margin-left: 15px;
+    position: relative;
+    top: -5px;
+}
+
+.user-actions {
+    float: right;
+    height: 48px;
+    margin-right: 10px;
+}

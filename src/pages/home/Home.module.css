@@ -1,0 +1,23 @@
+.cardFullWidth {
+    width: 100%;
+}
+
+.cardTitle {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.centerText {
+    text-align: center;
+    font-weight: bold;
+}
+
+.iconSpacing {
+    margin-right: 0.5rem;
+}
+
+/* Home.module.css */
+.tableHeader {
+    background-color: #4CAF50;  /* Change to your desired background color */
+    color: white;  /* Change to your desired text color */
+}
