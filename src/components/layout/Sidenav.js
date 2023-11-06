@@ -1,8 +1,8 @@
-import { Menu, Button } from "antd";
+import { Menu } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import React, { useEffect } from "react";
 import logo from "../../assets/images/logo.png";
-import { QuestionCircleOutlined, DashboardOutlined } from "@ant-design/icons";
+import { DashboardOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserPermissions } from "../../pages/user/userSlice";
 
@@ -43,7 +43,7 @@ function Sidenav({ color }) {
           key="1"
           style={{
             display:
-              permissions && permissions["dashboard"].indexOf(userRole) != -1
+              permissions && permissions["dashboard"].indexOf(userRole) !== -1
                 ? "inline"
                 : "none",
           }}
@@ -81,7 +81,7 @@ function Sidenav({ color }) {
             style={{
               display:
                 permissions &&
-                permissions["users"]["create"].indexOf(userRole) != -1
+                permissions["users"]["create"].indexOf(userRole) !== -1
                   ? "inline"
                   : "none",
             }}
@@ -97,7 +97,7 @@ function Sidenav({ color }) {
             style={{
               display:
                 permissions &&
-                permissions["users"]["list"].indexOf(userRole) != -1
+                permissions["users"]["list"].indexOf(userRole) !== -1
                   ? "inline"
                   : "none",
             }}
@@ -130,7 +130,7 @@ function Sidenav({ color }) {
             style={{
               display:
                 permissions &&
-                permissions["products"]["create"].indexOf(userRole) != -1
+                permissions["products"]["create"].indexOf(userRole) !== -1
                   ? "inline"
                   : "none",
             }}
@@ -146,7 +146,7 @@ function Sidenav({ color }) {
             style={{
               display:
                 permissions &&
-                permissions["products"]["list"].indexOf(userRole) != -1
+                permissions["products"]["list"].indexOf(userRole) !== -1
                   ? "inline"
                   : "none",
             }}

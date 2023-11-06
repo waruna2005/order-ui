@@ -2,23 +2,19 @@ import {
   Col,
   Row,
   Button,
-  Typography,
   Card,
   Form,
   Input,
   Select,
   Layout,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { createUser, updateUser, fetchUser, fetchUserRoles } from "./userSlice";
 
 const { Content } = Layout;
-const { Option } = Select;
-const { TextArea } = Input;
 const User = () => {
-  const { Title, Text } = Typography;
   const { pathname } = useLocation();
   const [form] = Form.useForm();
   const { roles } = useSelector((state) => (state.users ? state.users : {}));
@@ -54,10 +50,10 @@ const User = () => {
     ) {
       form.resetFields();
       let _roles = roles.filter((role) => {
-        return role.value == selectedUser.userRole ? role.value : "";
+        return role.value === selectedUser.userRole ? role.value : "";
       });
       let _status = status.filter((sts) => {
-        return sts.value == selectedUser.userStatus ? sts.value : "";
+        return sts.value === selectedUser.userStatus ? sts.value : "";
       });
 
       form.setFieldsValue({
@@ -75,17 +71,17 @@ const User = () => {
   const onFinish = async (values) => {
 
     let roleObject = roles.filter((role) => {
-      return role.value == values.userRole ? role.key : "";
+      return role.value === values.userRole ? role.key : "";
     });
     values.userRole = roleObject.length > 0 ? roleObject[0].key : "";
 
     let statusObject = status.filter((status) => {
-      return status.value == values.userStatus ? status.value : "";
+      return status.value === values.userStatus ? status.value : "";
     });
 
     values.userStatus = statusObject.length > 0 ? statusObject[0].key : "";
 
-    if (userId != "") {
+    if (userId !== "") {
       await dispatch(updateUser(userId, values));
     } else {
       await dispatch(createUser(values));

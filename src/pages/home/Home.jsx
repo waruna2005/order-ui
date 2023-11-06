@@ -1,27 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Line } from "@ant-design/plots";
-import {
-  Col,
-  Row,
-  Button,
-  Typography,
-  Card,
-  Form,
-  Input,
-  Select,
-  Table,
-  DatePicker,
-  Alert,
-  Space
-} from "antd";
-import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { fetchProductList, deleteProduct } from "../product/productSlice";
+import React, { useEffect } from "react";
+import { fetchProductList } from "../product/productSlice";
 import { showHideLoading } from "../../utils/HandleLoading";
 
 import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
-    const [form] = Form.useForm();
     const dispatch = useDispatch();
     const { products, loading } = useSelector((state) =>
     state.products ? state.products : []

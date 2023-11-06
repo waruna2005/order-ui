@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import {
-  getUserPermissions,
   getUserById,
   getUserRoles,
   getUsers,
@@ -111,7 +110,7 @@ export const fetchUserList = (query = "") => async (dispatch) => {
   try {
     const response = await getUsers(query);
     const users = response.data.list ? response.data.list : null;
-    if (users != null) {
+    if (users !== null) {
       dispatch(fetchUsersSuccess(response.data));
     } else {
       dispatch(fetchUsersFail());
@@ -128,7 +127,7 @@ export const fetchUserRoles = () => async (dispatch) => {
   dispatch(fetchUserRolesStart());
   try {
     const response = await getUserRoles();
-    if (response != null) {
+    if (response !== null) {
       dispatch(fetchUserRolesSuccess({ roles: response }));
     } else {
       dispatch(fetchUserRolesFail());
@@ -146,7 +145,7 @@ export const fetchUser = (id) => async (dispatch) => {
   try {
     const response = await getUserById(id);
     const user = response.data ? response.data : null;
-    if (user != null) {
+    if (user !== null) {
       dispatch(fetchUserSuccess(response));
     } else {
       dispatch(fetchUserFail());
@@ -165,7 +164,7 @@ export const createUser = (data) => async (dispatch) => {
   try {
     const response = await createUserApi(data);
     const user = response.data ? response.data : null;
-    if (user != null && response.code == 201) {
+    if (user !== null && response.code === 201) {
       toast.success("Sucessfuly Saved!");
     } else {
       dispatch(fetchUserFail());
@@ -194,14 +193,14 @@ export const updateUser = (_id, data) => async (dispatch) => {
       toast.error("Is Not Strong Password");
       return;
     }
-    if (data.userPassword != data.confpassword) {
+    if (data.userPassword !== data.confpassword) {
       toast.error("Passwords don't match!");
       return;
     }
 
     const response = await updateUserApi(_id, data);
     const user = response.data ? response.data : null;
-    if (user != null) {
+    if (user !== null) {
       toast.success("Sucessfuly Updated!");
     } else {
       dispatch(fetchUserFail());
@@ -220,7 +219,7 @@ export const deleteUser = (_id) => async (dispatch) => {
   try {
     const response = await deleteUserApi(_id);
     const users = response.data.users ? response.data.users : null;
-    if (users != null) {
+    if (users !== null) {
       toast.success("Sucessfuly Deleted!");
     } else {
       dispatch(fetchUsersFail());
@@ -239,7 +238,7 @@ export const fetchGenders = () => async (dispatch) => {
   try {
     const response = await getGenders();
     const genders = response;
-    if (genders != null) {
+    if (genders !== null) {
       dispatch(fetchGendersSuccess({ genders: genders }));
     } else {
       dispatch(fetchGendersFail());
@@ -302,7 +301,7 @@ export const fetchUserPermissions = () => async (dispatch) => {
   };
   let permissions =  response.data ? response.data
       : null;
-    if (permissions != null) {
+    if (permissions !== null) {
       dispatch(fetchUserPermissionsSuccess(response));
     } else {
       dispatch(fetchUserPermissionsFail());

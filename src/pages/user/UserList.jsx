@@ -3,16 +3,12 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchUserList } from "./userSlice";
-import { fetchUserPermissions } from "../user/userSlice";
 import { showHideLoading } from "../../utils/HandleLoading";
 
 const UserList = () => {
   const dispatch = useDispatch();
   const { users, loading } = useSelector((state) =>
     state.users ? state.users : []
-  );
-  const { electoralDivisions } = useSelector((state) =>
-    state.electoralDivisions ? state.electoralDivisions : []
   );
 
   const { permissions } = useSelector((state) =>
@@ -78,7 +74,7 @@ const UserList = () => {
       render: (_, record) => (
         <Space size="middle">
           {permissions &&
-          permissions["users"]["edit"].indexOf(userRole) != -1 ? (
+          permissions["users"]["edit"].indexOf(userRole) !== -1 ? (
             <a href={"/users/" + record.userSyscoID + "/edit"}>Edit</a>
           ) : (
             ""

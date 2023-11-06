@@ -1,27 +1,21 @@
 import {
   Layout,
-  Menu,
   Button,
   Row,
   Col,
   Typography,
   Form,
   Input,
-  Switch,
 } from "antd";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { fetchUser } from "./authSlice";
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import signinbg from "../../assets/images/feedback.jpg";
 
-function onChange(checked) {
-  console.log(`switch to ${checked}`);
-}
 const { Title } = Typography;
-const { Header, Footer, Content } = Layout;
+const { Content } = Layout;
 
 const Login = () => {
   const dispatch = useDispatch();

@@ -2,7 +2,6 @@ import {
   REACT_APP_API_USER_LOGIN,
   REACT_APP_API_USER,
   REACT_APP_API_CHANGE_PASSWORD,
-  REACT_APP_API_USER_PERMISSIONS,
 } from "./endpoints";
 
 export const getUserApi = async (data) => {
@@ -15,7 +14,7 @@ export const getUserApi = async (data) => {
   });
   const result = await response.json();
 
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;
@@ -31,7 +30,7 @@ export const getUserById = async (_id) => {
   });
   const result = await response.json();
 
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;
@@ -40,7 +39,7 @@ export const getUserById = async (_id) => {
 export const getUsers = async (queryValues) => {
 
   let query = "";
-  if (queryValues != "") {
+  if (queryValues !== "") {
     query = "userRole=all"
     +"&userStatus=all"
     + "&page="+((query.page) ? query.page : 0)
@@ -56,7 +55,7 @@ export const getUsers = async (queryValues) => {
   });
   const result = await response.json();
 
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;
@@ -71,7 +70,7 @@ export const createUserApi = async (data) => {
     body: JSON.stringify(data),
   });
   const result = await response.json();
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;
@@ -86,7 +85,7 @@ export const changePasswordApi = async (data) => {
     body: JSON.stringify(data),
   });
   const result = await response.json();
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;
@@ -103,7 +102,7 @@ export const updateUserApi = async (_id, data) => {
   });
   const result = await response.json();
 
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;
@@ -119,7 +118,7 @@ export const deleteUserApi = async (_id) => {
   });
   const result = await response.json();
 
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;

@@ -1,7 +1,6 @@
 import { Table, Space } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CheckOutlined } from "@ant-design/icons";
 
 import { fetchProductList, deleteProduct } from "./productSlice";
 import { showHideLoading } from "../../utils/HandleLoading";
@@ -71,15 +70,15 @@ const ProductList = () => {
       render: (_, record) => (
         <Space size="middle">
           {permissions &&
-          permissions["products"]["edit"].indexOf(userRole) != -1 ? (
+          permissions["products"]["edit"].indexOf(userRole) !== -1 ? (
             <a href={"/product/" + record.productID + "/edit"}>Edit</a>
           ) : (
             ""
           )}
           {
             permissions &&
-            permissions["products"]["delete"].indexOf(userRole) != -1 &&
-            (record.productApproval != "approved") ? ( // Adding the condition to check if the product is not approved
+            permissions["products"]["delete"].indexOf(userRole) !== -1 &&
+            (record.productApproval !== "approved") ? ( // Adding the condition to check if the product is not approved
               <a href="#" onClick={() => _deleteArea(record.productID)}>
                 Delete
               </a>

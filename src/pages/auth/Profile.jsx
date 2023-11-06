@@ -2,24 +2,17 @@ import {
   Col,
   Row,
   Button,
-  Typography,
   Card,
   Form,
   Input,
-  Select,
   Layout,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import { updateUser, fetchUser, fetchUserRoles } from "../user/userSlice";
 
 const { Content } = Layout;
-const { Option } = Select;
-const { TextArea } = Input;
 const Profile = () => {
-  const { Title, Text } = Typography;
-  const { pathname } = useLocation();
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   let userId = localStorage.getItem("userSyscoID");
@@ -47,10 +40,6 @@ const Profile = () => {
       roles.length
     ) {
       form.resetFields();
-
-      let roleName = roles.filter((role) => {
-        return role.key == selectedUser.userRole ? role.value : "";
-      });
 
       form.setFieldsValue({
         userSyscoID: selectedUser.userSyscoID,

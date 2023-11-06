@@ -2,23 +2,20 @@ import {
   Col,
   Row,
   Button,
-  Typography,
   Card,
   Form,
   Input,
   Select,
   Layout,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { createProduct, updateProduct, fetchProduct, fetchProductStatus, fetchProductAproval } from "./productSlice";
 
 const { Content } = Layout;
-const { Option } = Select;
 const { TextArea } = Input;
 const Product = () => {
-  const { Title, Text } = Typography;
   const { pathname } = useLocation();
   const [form] = Form.useForm();
   const { status } = useSelector((state) => (state.products ? state.products : {}));
@@ -29,7 +26,7 @@ const Product = () => {
    */
   let pathArr = pathname.split("/");
   let productId = pathArr.length >= 4 ? pathArr[2] : "";
-  const isAdmin = (localStorage.getItem("userRole") == "admin");
+  const isAdmin = (localStorage.getItem("userRole") === "admin");
 
   const { selectedProduct } = useSelector((state) =>
   productId && state.products ? state.products : {}
@@ -68,7 +65,7 @@ const Product = () => {
     values.productImage = "no image";
     values.supplierName = localStorage.getItem("firstName");
 
-    if (productId != "") {
+    if (productId !== "") {
       values.productApproval = (values.productApproval) ? values.productApproval : selectedProduct.productApproval;
       await dispatch(updateProduct(productId, values));
     } else {

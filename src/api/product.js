@@ -10,7 +10,7 @@ export const getProduct = async (_id) => {
   });
   const result = await response.json();
 
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;
@@ -26,7 +26,7 @@ export const getProducts = async (query = "") => {
   });
   const result = await response.json();
 
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;
@@ -43,7 +43,7 @@ export const createProductApi = async (data) => {
   });
   const result = await response.json();
 
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;
@@ -60,7 +60,7 @@ export const updateProductApi = async (_id, data) => {
   });
   const result = await response.json();
 
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;
@@ -76,7 +76,7 @@ export const deleteProductApi = async (_id) => {
   });
   const result = await response.json();
 
-  if (response.status != 200)
+  if (response.status !== 200)
     throw new Error(result.error || "Something went wrong");
 
   return result;

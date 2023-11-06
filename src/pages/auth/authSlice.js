@@ -59,7 +59,7 @@ export const fetchUser = (data) => async (dispatch) => {
   try {
     const response = await getUserApi(data);
     const user = response.data ? response.data : null;
-    if (user != null && response.code == 200) {
+    if (user !== null && response.code === 200) {
       localStorage.setItem("email", user.userEmail ? user.userEmail : "");
       localStorage.setItem("firstName", user.userFirstName ? user.userFirstName : "");
       localStorage.setItem("lastName", user.userLastName ? user.userLastName : "");
@@ -110,13 +110,13 @@ export const createUser = (data) => async (dispatch) => {
       toast.error("Is Not Strong Password");
       return;
     }
-    if (data.userPassword != data.confpassword) {
+    if (data.userPassword !== data.confpassword) {
       toast.error("Passwords don't match!");
       return;
     }
     const response = await createUserApi(data);
     const user = response.data ? response.data : null;
-    if (user != null && response.code == 201) {
+    if (user !== null && response.code === 201) {
       toast.success(response.message);
       setTimeout(function() {
         window.location.href = '/login';
@@ -148,13 +148,13 @@ export const updateProfile = (data) => async (dispatch) => {
       toast.error("Is Not Strong Password");
       return;
     }
-    if (data.userPassword != data.confpassword) {
+    if (data.userPassword !== data.confpassword) {
       toast.error("Passwords don't match!");
       return;
     }
     const response = await changePasswordApi(data);
     const user = response.data.user ? response.data.user : null;
-    if (user != null) {
+    if (user !== null) {
       toast.success("Password sucessfuly changed!");
     } else {
       dispatch(fetchUserFail());
