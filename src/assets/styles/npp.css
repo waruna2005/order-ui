@@ -33471,13 +33471,20 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
   font-size: 50px;
 }
 
-.info-box .progress-description,
+.info-box .progress-description {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
+}
+
 .info-box .info-box-text {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 28px;
+  font-size: 22px;
 }
 
 .info-box .info-box .bg-primary,

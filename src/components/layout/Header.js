@@ -99,11 +99,11 @@ function Header({
   const history = useHistory();
 
   const onClick = async ({ key }) => {
-    if (key === 1) {
+    if (key == 1) {
       await handleSignOut();
     }
 
-    if (key === 2) {
+    if (key == 2) {
       history.push("/profile");
     }
   };

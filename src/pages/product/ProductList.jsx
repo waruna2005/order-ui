@@ -14,10 +14,16 @@ const ProductList = () => {
     state.users ? state.users : []
   );
   const userRole = localStorage.getItem("userRole");
+  const isAdmin = (userRole === "admin");
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const productStatus = (urlParams.get("product_status")) ? urlParams.get("product_status") : 'all'
+
+
   showHideLoading(loading);
   let query = "product_status=all"
-  +"&approval_status=all"
-  +"&supplier_sysco_id="
+  +"&approval_status="+productStatus
+  +((isAdmin) ? "&supplier_sysco_id=" : "&supplier_sysco_id="+localStorage.getItem("userSyscoID"))
   + "&page=0"
   + "&size=1000";
 
@@ -38,6 +44,13 @@ const ProductList = () => {
       sorter: (a, b) => a.productID.length - b.productID.length,
     },
     {
+      title: "Product Sysco ID",
+      dataIndex: "productSyscoID",
+      key: "productSyscoID",
+      onFilter: (value, product) => product.productSyscoID.indexOf(value) === 0,
+      sorter: (a, b) => a.productSyscoID.length - b.productSyscoID.length,
+    },
+    {
       title: "Product Name",
       dataIndex: "productName",
       filterMultiple: false,
@@ -45,11 +58,11 @@ const ProductList = () => {
       sorter: (a, b) => a.productName.length - b.productName.length,
     },
     {
-      title: "Product Description",
-      dataIndex: "productDescription",
+      title: "Product Price",
+      dataIndex: "productPrice",
       filterMultiple: false,
-      onFilter: (value, record) => record.productDescription.indexOf(value) === 0,
-      sorter: (a, b) => a.productDescription.length - b.productDescription.length,
+      onFilter: (value, record) => record.productPrice.indexOf(value) === 0,
+      sorter: (a, b) => a.productPrice.length - b.productPrice.length,
     },
     {
       title: "Product Aproval",

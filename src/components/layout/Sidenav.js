@@ -25,11 +25,15 @@ function Sidenav({ color }) {
     fetchData();
   }, []);
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   return (
     <>
       <div className="brand">
         <img src={logo} alt="" />
-        <span>Admin Dashboard</span>
+        <span>{ capitalizeFirstLetter(localStorage.getItem("userRole")) } Dashboard</span>
       </div>
       {/* <h2>
           &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
@@ -62,17 +66,25 @@ function Sidenav({ color }) {
         </Menu.Item>
         <SubMenu
           key="6"
+          style={{
+            background: page === "memberList" ? color : "",
+            display:
+            permissions &&
+            (permissions["users"]["create"].indexOf(userRole) !== -1 || permissions["users"]["list"].indexOf(userRole) !== -1)
+              ? "inline"
+              : "none",
+          }}
           title={
             <span>
               <span
                 className="icon"
                 style={{
-                  background: page === "memberList" ? color : "",
+                  background: page === "memberList" ? color : ""
                 }}
               >
                 <DashboardOutlined />
               </span>
-              <span>User</span>
+              <span >User</span>
             </span>
           }
         >
@@ -111,6 +123,14 @@ function Sidenav({ color }) {
         </SubMenu>
         <SubMenu
           key="7"
+          style={{
+            background: page === "memberList" ? color : "",
+            display:
+            permissions &&
+            (permissions["products"]["create"].indexOf(userRole) !== -1 || permissions["products"]["list"].indexOf(userRole) !== -1)
+              ? "inline"
+              : "none",
+          }}
           title={
             <span>
               <span

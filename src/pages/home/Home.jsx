@@ -11,9 +11,13 @@ const Home = () => {
   );
 
     showHideLoading(loading);
+
+    const userRole = localStorage.getItem("userRole");
+    const isAdmin = (userRole === "admin");
+
     let query = "product_status=all"
     +"&approval_status=all"
-    +"&supplier_sysco_id="
+    +((isAdmin) ? "&supplier_sysco_id=" : "&supplier_sysco_id="+localStorage.getItem("userSyscoID"))
     + "&page=0"
     + "&size=100";
 
@@ -28,7 +32,6 @@ const Home = () => {
   const approvedProductsCount = products.filter(product => product.productApproval === 'approved').length;
   const pendingProductsCount = products.filter(product => product.productApproval === 'pending').length;
   const notApprovedProductsCount = products.filter(product => product.productApproval === 'not').length;
-  let userRole = localStorage.getItem("userRole")
     return (
         <>
         {(userRole === 'admin' || userRole === 'supplier') && (
@@ -47,6 +50,7 @@ const Home = () => {
                         <div className="progress-bar"></div>
                       </div>
                       <span className="progress-description">Approved From Admin</span>
+                      <span className="progress-description"><a  href="/product/list?product_status=approved"> More detail</a></span>
                     </div>
                   </div>
                 </div>
@@ -66,6 +70,7 @@ const Home = () => {
                       <span className="progress-description">
                       Awaiting administrative approval
                       </span>
+                      <span className="progress-description"><a  href="/product/list?product_status=pending"> More detail</a></span>
                     </div>
                   </div>
                 </div>
@@ -85,6 +90,7 @@ const Home = () => {
                       <span className="progress-description">
                       Rejected From admin
                       </span>
+                      <span className="progress-description"><a  href="/product/list?product_status=not"> More detail</a></span>
                     </div>
                   </div>
                 </div>

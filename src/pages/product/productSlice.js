@@ -100,15 +100,15 @@ export const fetchProductList =
     try {
       const response = await getProducts(query);
       const products = response.data ? response.data : null;
-      if (products != null) {
+      if (products != null && response.code == 200) {
         dispatch(fetchProductsSuccess(response.data));
       } else {
         dispatch(fetchProductsFail());
-        toast.error(response.errors.join(", "));
+        toast.error(response.message);
       }
     } catch (error) {
-      console.log("error", error);
-      toast.error("Something went wrong");
+      let msg = error || "Something went wrong";
+      toast.error(msg);
       dispatch(fetchProductsFail());
     }
   };
@@ -118,15 +118,15 @@ export const fetchProduct = (id) => async (dispatch) => {
   try {
     const response = await getProduct(id);
     const products = response.data ? response.data : null;
-    if (products != null) {
+    if (products != null && response.code == 200) {
       dispatch(fetchProductSuccess(response));
     } else {
       dispatch(fetchProductFail());
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchProductFail());
   }
@@ -144,8 +144,8 @@ export const createProduct = (data) => async (dispatch) => {
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchProductFail());
   }
@@ -163,8 +163,8 @@ export const updateProduct = (_id, data) => async (dispatch) => {
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchProductFail());
   }
@@ -183,8 +183,8 @@ export const deleteProduct = (_id, products) => async (dispatch) => {
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchProductsFail());
   }
@@ -202,8 +202,8 @@ export const fetchProductStatus = () => async (dispatch) => {
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchProductStatusFail());
   }
@@ -221,8 +221,8 @@ export const fetchProductAproval = () => async (dispatch) => {
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchProductAprovalFail());
   }

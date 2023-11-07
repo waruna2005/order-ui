@@ -71,9 +71,8 @@ export const fetchUser = (data) => async (dispatch) => {
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
-
+    let msg = "Something went wrong";
+    toast.error(msg);
     dispatch(fetchUserFail());
   }
 };
@@ -81,14 +80,11 @@ export const fetchUser = (data) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   dispatch(fetchUserStart());
   try {
-    localStorage.removeItem("username");
+    localStorage.removeItem("email");
     localStorage.removeItem("firstName");
     localStorage.removeItem("lastName");
-    localStorage.removeItem("districtId");
-    localStorage.removeItem("electoralSeatId");
-    localStorage.removeItem("electoralDivisionId");
-    localStorage.removeItem("token");
-
+    localStorage.removeItem("userSyscoID");
+    localStorage.removeItem("userRole");
     dispatch(logoutUser());
   } catch (error) {
     console.log("error", error);
@@ -126,8 +122,8 @@ export const createUser = (data) => async (dispatch) => {
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchUserFail());
   }
@@ -161,8 +157,8 @@ export const updateProfile = (data) => async (dispatch) => {
       toast.error(response.errors.join(", "));
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchUserFail());
   }

@@ -14,8 +14,10 @@ export const getUserApi = async (data) => {
   });
   const result = await response.json();
 
-  if (response.status !== 200)
-    throw new Error(result.error || "Something went wrong");
+  // if (response.status !== 200) {
+  //   const errorBody = result.message ?? "Something went wrong";
+  //   throw new Error(errorBody);
+  // }
 
   return result;
 };
@@ -30,8 +32,10 @@ export const getUserById = async (_id) => {
   });
   const result = await response.json();
 
-  if (response.status !== 200)
-    throw new Error(result.error || "Something went wrong");
+  if (response.status !== 200) {
+    const errorBody = result.message ?? "";
+    throw new Error(errorBody || "Something went wrong");
+  }
 
   return result;
 };
@@ -55,8 +59,10 @@ export const getUsers = async (queryValues) => {
   });
   const result = await response.json();
 
-  if (response.status !== 200)
-    throw new Error(result.error || "Something went wrong");
+  if (response.status !== 200) {
+    const errorBody = result.message ?? "";
+    throw new Error(errorBody || "Something went wrong");
+  }
 
   return result;
 };
@@ -70,8 +76,10 @@ export const createUserApi = async (data) => {
     body: JSON.stringify(data),
   });
   const result = await response.json();
-  if (response.status !== 200)
-    throw new Error(result.error || "Something went wrong");
+  // if (response.status !== 200) {
+  //   const errorBody = result.message ?? "";
+  //   throw new Error(errorBody || "Something went wrong");
+  // }
 
   return result;
 };
@@ -85,8 +93,10 @@ export const changePasswordApi = async (data) => {
     body: JSON.stringify(data),
   });
   const result = await response.json();
-  if (response.status !== 200)
-    throw new Error(result.error || "Something went wrong");
+  if (response.status !== 200) {
+    const errorBody = result.message ?? "";
+    throw new Error(errorBody || "Something went wrong");
+  }
 
   return result;
 };
@@ -102,8 +112,10 @@ export const updateUserApi = async (_id, data) => {
   });
   const result = await response.json();
 
-  if (response.status !== 200)
-    throw new Error(result.error || "Something went wrong");
+  if (response.status !== 200) {
+    const errorBody = result.message ?? "";
+    throw new Error(errorBody || "Something went wrong");
+  }
 
   return result;
 };
@@ -118,8 +130,10 @@ export const deleteUserApi = async (_id) => {
   });
   const result = await response.json();
 
-  if (response.status !== 200)
-    throw new Error(result.error || "Something went wrong");
+  if (response.status !== 200) {
+    const errorBody = result.message ?? "";
+    throw new Error(errorBody || "Something went wrong");
+  }
 
   return result;
 };

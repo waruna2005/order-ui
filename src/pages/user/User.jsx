@@ -106,13 +106,14 @@ const User = () => {
                   className="row-col"
                   form={form}
                 >
-                  <Form.Item
-                    name="userSyscoID"
-                    readOnly
-                  >
-                    <Input readOnly  placeholder="Sysco ID" style={{ width: "50%" }} />
-                  </Form.Item>
-
+                  {userId && (
+                    <Form.Item
+                      name="userSyscoID"
+                      readOnly
+                    >
+                      <Input readOnly  placeholder="Sysco ID" style={{ width: "50%" }} />
+                    </Form.Item>
+                  )}
                   <Form.Item
                     name="userFirstName"
                     rules={[

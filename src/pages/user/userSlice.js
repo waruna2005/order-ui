@@ -117,8 +117,8 @@ export const fetchUserList = (query = "") => async (dispatch) => {
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
     dispatch(fetchUsersFail());
   }
 };
@@ -134,8 +134,8 @@ export const fetchUserRoles = () => async (dispatch) => {
       toast.error(response.errors.join(", "));
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
     dispatch(fetchUserRolesFail());
   }
 };
@@ -152,8 +152,8 @@ export const fetchUser = (id) => async (dispatch) => {
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchUserFail());
   }
@@ -168,11 +168,11 @@ export const createUser = (data) => async (dispatch) => {
       toast.success("Sucessfuly Saved!");
     } else {
       dispatch(fetchUserFail());
-      toast.error(response.errors.join(", "));
+      toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchUserFail());
   }
@@ -207,8 +207,8 @@ export const updateUser = (_id, data) => async (dispatch) => {
       toast.error(response.message);
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchUserFail());
   }
@@ -226,8 +226,8 @@ export const deleteUser = (_id) => async (dispatch) => {
       toast.error(response.errors.join(", "));
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchUsersFail());
   }
@@ -245,8 +245,8 @@ export const fetchGenders = () => async (dispatch) => {
       toast.error(response.errors.join(", "));
     }
   } catch (error) {
-    console.log("error", error);
-    toast.error("Something went wrong");
+    let msg = error || "Something went wrong";
+    toast.error(msg);
 
     dispatch(fetchGendersFail());
   }
