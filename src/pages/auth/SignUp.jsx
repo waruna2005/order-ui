@@ -20,6 +20,7 @@ const { Content } = Layout;
 const SignUp = () => {
   const dispatch = useDispatch();
   const onFinish = async (values) => {
+    values.userStatus = 'inactive';
     await dispatch(createUser(values));
   };
   const onFinishFailed = (errorInfo) => {

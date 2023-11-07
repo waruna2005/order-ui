@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import { fetchProductList } from "../product/productSlice";
 import { showHideLoading } from "../../utils/HandleLoading";
-
+import {
+  Button,
+} from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import productImage from "../../assets/images/dummy.jpeg";
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -14,10 +17,12 @@ const Home = () => {
 
     const userRole = localStorage.getItem("userRole");
     const isAdmin = (userRole === "admin");
+    const isCustomer = (userRole === "customer");
+
 
     let query = "product_status=all"
-    +"&approval_status=all"
-    +((isAdmin) ? "&supplier_sysco_id=" : "&supplier_sysco_id="+localStorage.getItem("userSyscoID"))
+    +((isCustomer) ? "&approval_status=approved" : "&approval_status=")
+    +((isAdmin || isCustomer) ? "&supplier_sysco_id=" : "&supplier_sysco_id="+localStorage.getItem("userSyscoID"))
     + "&page=0"
     + "&size=100";
 
@@ -96,6 +101,33 @@ const Home = () => {
                 </div>
                 </div>
         )}
+
+        {
+            (userRole === 'customer') && (
+                <div className="row">
+                    {products.map((product) => (
+                        <div className="col-md-3 col-sm-6 col-12" key={product.id}>
+                            <a href='#'><div className="info-box">
+                                <div className="info-box-content">
+                                <span ><img src={productImage} alt={product.productName} />
+                                </span>
+                                    <span className="info-box-text">{product.productName}</span>
+                                    <span className="info-box-price">${product.productPrice}</span>
+                                    <Button
+                                    style={{ width: "100%", fontSize:'16px'}}
+                                    type="primary"
+                                    htmlType="submit"
+                                  >
+                                    Add To Cart
+                                  </Button>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                    ))}
+                </div>
+            )
+        }
 </>
   );
 };
