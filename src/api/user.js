@@ -40,15 +40,7 @@ export const getUserById = async (_id) => {
   return result;
 };
 
-export const getUsers = async (queryValues) => {
-
-  let query = "";
-  if (queryValues !== "") {
-    query = "userRole=all"
-    +"&userStatus=all"
-    + "&page="+((query.page) ? query.page : 0)
-    + "&size="+((query.size) ? query.size : 10);
-  }
+export const getUsers = async (query) => {
 
   const response = await fetch(`${REACT_APP_API_USER}/by-role?${query}`, {
     method: "GET",

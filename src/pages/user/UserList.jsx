@@ -15,9 +15,19 @@ const UserList = () => {
     state.users ? state.users : []
   );
   const userRole = localStorage.getItem("userRole");
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const userStatus = (urlParams.get("userStatus")) ? urlParams.get("userStatus") : 'all'
+
+
+  showHideLoading(loading);
+  let query = "userRole=all"
+  +"&userStatus="+userStatus
+  + "&page=0"
+  + "&size=1000";
+  
   showHideLoading(loading);
   const fetchData = async () => {
-    let query = {};
     await dispatch(fetchUserList(query));
   };
 

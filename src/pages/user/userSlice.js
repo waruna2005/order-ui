@@ -295,7 +295,23 @@ export const fetchUserPermissions = () => async (dispatch) => {
                     "admin",
                     "supplier"
                 ]
-            }
+            },
+
+            "orders": {
+              "create": [
+                  "customer"
+              ],
+              "edit": [
+                  "customer"
+              ],
+              "delete": [
+                  "customer"
+              ],
+              "list": [
+                  "customer",
+                  "supplier"
+              ]
+          }
           }
       }
   };

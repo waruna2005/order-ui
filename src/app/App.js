@@ -15,6 +15,8 @@ import ProductList from "../pages/product/ProductList";
 import PrivateRoute from "./PrivateRoute";
 import AuthVerify from "../components/common/authverify";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import Order from "../pages/order/Order";
+import OrderList from "../pages/order/OrderList";
 import "antd/dist/antd.css";
 import "../assets/styles/main.css";
 import "../assets/styles/npp.css";
@@ -53,6 +55,13 @@ function App() {
           <PrivateRoute path="/product/:id/edit">
             <Product />
           </PrivateRoute>
+          <PrivateRoute path="/order/create">
+            <Order />
+          </PrivateRoute>
+          <PrivateRoute path="/order/list">
+            <OrderList />
+          </PrivateRoute>
+          
           <PrivateRoute >
             <Home />
           </PrivateRoute>

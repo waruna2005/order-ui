@@ -178,6 +178,47 @@ function Sidenav({ color }) {
             </NavLink>
           </Menu.Item>
         </SubMenu>
+        <SubMenu
+          key="8"
+          style={{
+            background: page === "memberList" ? color : "",
+            display:
+            permissions &&
+            (permissions["orders"]["create"].indexOf(userRole) !== -1 || permissions["orders"]["list"].indexOf(userRole) !== -1)
+              ? "inline"
+              : "none",
+          }}
+          title={
+            <span>
+              <span
+                className="icon"
+                style={{
+                  background: page === "memberList" ? color : "",
+                }}
+              >
+                <DashboardOutlined />
+              </span>
+              <span>Orders</span>
+            </span>
+          }
+        >
+          <Menu.Item
+            key="7.2"
+            style={{
+              display:
+                permissions &&
+                permissions["orders"]["list"].indexOf(userRole) !== -1
+                  ? "inline"
+                  : "none",
+            }}
+          >
+            <NavLink to="/order/list">
+              <span style={{ paddingLeft: "50px" }} className="label">
+              Order List
+              </span>
+            </NavLink>
+          </Menu.Item>
+        </SubMenu>
       </Menu>
     </>
   );

@@ -1,5 +1,5 @@
-const baseUrl = "http://localhost:3000";
-//const baseUrl = "http://localhost:2061";
+//const baseUrl = "http://localhost:3000";
+const baseUrl = "http://localhost:2061";
 //User Api Endpoints
 export const REACT_APP_API_USER_LOGIN = baseUrl + "/user/login";
 export const REACT_APP_API_USER = baseUrl + "/user";
@@ -12,3 +12,5 @@ export const REACT_APP_API_KEY_PAGES = baseUrl + "/api/keypages";
 export const REACT_APP_API_AUTOMATION = baseUrl + "/api/automation";
 
 export const REACT_APP_API_PRODUCT = baseUrl + "/product";
+
+export const REACT_APP_API_ORDER = baseUrl + "/order";
