@@ -124,6 +124,11 @@ function Header({
   name = nameArr.length > 2 ? nameArr[0] + "/" + nameArr[2] : name;
   subName =
     subNameArr.length > 2 ? subNameArr[0] + "/" + subNameArr[2] : subName;
+
+  const goToCart = () => {
+    window.location.href = "/order/create";
+  };
+    
   return (
     <>
       <Row gutter={[24, 0]}>
@@ -166,10 +171,10 @@ function Header({
             </Dropdown>
           </Badge>{" "}
           */}
-          {/* <Button type="link" onClick={showDrawer}>
-            {logsetting}
+          <Button type="link" onClick={() => goToCart()}>
+              <i style={{fontSize:"24px"}} class="fa fa-shopping-cart"></i>
           </Button>
-          */}
+         
           <Button
             type="link"
             className="sidebar-toggler"

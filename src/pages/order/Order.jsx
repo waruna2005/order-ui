@@ -14,8 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { fetchProduct, updateProduct, fetchProductList, deleteProduct } from "../product/productSlice";
-import { fetchCart,updateCart, deleteCart, createOrder } from "../order/orderSlice";
+import { fetchCart,updateCart, deleteCart, createOrder, fetchOrder, updateOrder } from "../order/orderSlice";
 import moment from "moment";
 
 const { Content } = Layout;
@@ -25,12 +24,15 @@ const Order = () => {
   const [form] = Form.useForm();
   const dateFormat = "YYYY-MM-DD";
   const [quantities, setQuantities] = useState({});
-  const { products } = useSelector((state) => (state.products ? state.products : {}));
+  let pathArr = pathname.split("/");
+  let orderId = pathArr.length >= 4 ? pathArr[2] : "";
+  const isCustomer = (localStorage.getItem("userRole") === "customer");
+  const isEditable = (orderId == "");
 
   const { selectedOrder, selectedCart } = useSelector((state) => (state.orders ? state.orders : {}));
 
   
-  
+  const orderStatus = ["placed","cancelled"];
   const { permissions } = useSelector((state) =>
     state.users ? state.users : []
   );
@@ -66,19 +68,24 @@ const Order = () => {
       title: "Quantity",
       key: "quantity",
       render: (_, record) => (
-        <Input 
-          type="number" 
-          value={quantities[record.productSyscoID] || record.quantity} 
-          onChange={(e) => handleQuantityChange(record.productSyscoID, e.target.value)} 
-        />
+        <>
+        {(isEditable) ? (
+          <Input 
+            type="number"
+            value={quantities[record.productSyscoID] || record.quantity} 
+            onChange={(e) => handleQuantityChange(record.productSyscoID, e.target.value)} 
+          />
+        ) : (
+          record.quantity
+        )}
+        </>
       ),
     },
     {
       title: "Actions",
       render: (_, record) => (
         <Space size="middle">
-          {userRole == "customer" &&
-            (record.productApproval !== "approved") ? (
+          {(isEditable) ? (
             <a href="#" onClick={() => _editProduct(record)}>
               Edit
             </a>
@@ -86,8 +93,7 @@ const Order = () => {
             ""
           )}
           {
-            userRole == "customer" &&
-            (record.productApproval !== "approved") ? ( // Adding the condition to check if the product is not approved
+            (isEditable) ? ( // Adding the condition to check if the product is not approved
               <a href="#" onClick={() => _removeCartItem(record.cartID)}>
                 remove
               </a>
@@ -100,31 +106,28 @@ const Order = () => {
     },
   ];
 
-  const { aprovals } = useSelector((state) => (state.products ? state.products : {}));
-
-  /**
-   * Get member ide from url
-   */
-  let pathArr = pathname.split("/");
-  let orderId = pathArr.length >= 4 ? pathArr[2] : "";
-  const isAdmin = (localStorage.getItem("userRole") === "admin");
 
 
   const dispatch = useDispatch();
-  let productQuery = "product_status=all"
-  +"&approval_status=approved"
-  +"&supplier_sysco_id="
-  + "&page=0"
-  + "&size=1000";
 
   const sessionId = localStorage.getItem("cart-id");
   useEffect(() => {
     const getCartById = () => {
       dispatch(fetchCart(sessionId));
     };
-    if (sessionId && !form.getFieldValue().customerName) {
-      getCartById();
+
+    const getOrderById = (orderId) => {
+      dispatch(fetchOrder(orderId));
+    };
+
+    if (orderId && !form.getFieldValue().customerName) {
+      getOrderById(orderId);
+    } else {
+      if (sessionId && !form.getFieldValue().customerName) {
+        getCartById();
+      }
     }
+
 
     if (
       selectedCart
@@ -153,8 +156,12 @@ const Order = () => {
 
   const onFinish = async (values) => {
     if (orderId !== "") {
-      
-      //await dispatch(createOrder(values));
+      let updateData = {
+        deliveryAddress : values.deliveryAddress,
+        deliveryDate : values.deliveryDate,
+        orderStatus : values.orderStatus
+      };
+      await dispatch(updateOrder(orderId, updateData));
     } else {
 
       let orderItem = [];
@@ -255,22 +262,46 @@ const Order = () => {
                       <Table
                         rowKey="productSyscoID"
                         columns={columns}
-                        dataSource={(selectedCart) ? selectedCart.cartDTOList : []}
+                        dataSource={(!orderId) ? ((selectedCart) ? selectedCart.cartDTOList : []) : ((selectedOrder) ? selectedOrder.orderDetailsDTOList : []) }
                       />
                     </div>
                   </Form.Item>
-                  <Form.Item className="right">
-                      <h3>Total Price : $ { (selectedCart && selectedCart.totalPrice) ? selectedCart.totalPrice : "" }</h3>
-                  </Form.Item>
-                  <Form.Item className="right">
-                    <Button
-                      style={{ width: "20%" }}
-                      type="primary"
-                      htmlType="submit"
+                  {(isCustomer && selectedOrder != null && selectedOrder.orderStatus == "placed") && (
+                      <Form.Item
+                      name="orderStatus"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select order status",
+                        },
+                      ]}
                     >
-                      Submit Order
-                    </Button>
+                      <Select
+                        placeholder="Order Status"
+                        allowClear
+                        style={{ width: '20%' }}
+                        options={orderStatus.map((sta) => ({
+                          value: sta,
+                          label: sta,
+                        }))}
+                      />
+                    </Form.Item>
+                  )}
+                  <Form.Item className="right">
+                      <h3>Total Price : $ { (orderId) ? ((selectedOrder && selectedOrder.totalPrice) ? selectedOrder.totalPrice : "") : (selectedCart && selectedCart.totalPrice) ? selectedCart.totalPrice : "" }</h3>
                   </Form.Item>
+
+                  {((selectedOrder != null && selectedOrder.orderStatus == "placed") || isEditable) && (
+                    <Form.Item className="right">
+                      <Button
+                        style={{ width: "20%" }}
+                        type="primary"
+                        htmlType="submit"
+                      >
+                        Submit Order
+                      </Button>
+                    </Form.Item>
+                  )}
                 </Form>
               </Card>
             </Content>

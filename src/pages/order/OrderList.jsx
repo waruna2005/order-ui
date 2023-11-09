@@ -78,31 +78,20 @@ const OrderList = () => {
       filterMultiple: false,
       onFilter: (value, record) => record.totalProducts.indexOf(value) === 0,
       sorter: (a, b) => a.totalProducts.length - b.totalProducts.length,
-    }
-    // {
-    //   title: "Actions",
-    //   render: (_, record) => (
-    //     <Space size="middle">
-    //       {permissions &&
-    //       permissions["products"]["edit"].indexOf(userRole) !== -1 ? (
-    //         <a href={"/product/" + record.productID + "/edit"}>Edit</a>
-    //       ) : (
-    //         ""
-    //       )}
-    //       {
-    //         permissions &&
-    //         permissions["products"]["delete"].indexOf(userRole) !== -1 &&
-    //         (record.productApproval !== "approved") ? ( // Adding the condition to check if the product is not approved
-    //           <a href="#" onClick={() => _deleteArea(record.productID)}>
-    //             Delete
-    //           </a>
-    //         ) : (
-    //           ""
-    //         )
-    //       }
-    //     </Space>
-    //   ),
-    // },
+    },
+    {
+      title: "Actions",
+      render: (_, record) => (
+        <Space size="middle">
+          {permissions &&
+          permissions["orders"]["view"].indexOf(userRole) !== -1 ? (
+            <a href={"/order/" + record.id+"/view"}>Go To Order</a>
+          ) : (
+            ""
+          )}
+        </Space>
+      ),
+    },
   ];
 
   const onFinish = async (values) => {

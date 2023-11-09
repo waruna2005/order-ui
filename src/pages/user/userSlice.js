@@ -301,11 +301,13 @@ export const fetchUserPermissions = () => async (dispatch) => {
               "create": [
                   "customer"
               ],
-              "edit": [
-                  "customer"
+              "view": [
+                "customer",
+                "supplier"
               ],
               "delete": [
-                  "customer"
+                  "customer",
+                  "supplier"
               ],
               "list": [
                   "customer",
