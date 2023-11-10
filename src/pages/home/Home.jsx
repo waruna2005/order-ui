@@ -52,7 +52,7 @@ const Home = () => {
   const pendingUserCount = users.filter(user => user.userStatus === 'inactive').length;
   const totalUserCount = users.length;
 
-  const handleAddToCart = (productId, productName, productPrice) => {
+  const handleAddToCart = (productId, productName, productPrice, supplierSyscoID, supplierName) => {
     let sessionId = localStorage.getItem("cart-id");
     if (!sessionId) {
       const uniqueId = uuidv4();
@@ -68,6 +68,9 @@ const Home = () => {
         quantity : 1,
         price : productPrice
       };
+      localStorage.setItem(productId+"-supplierName",supplierName);
+      localStorage.setItem(productId+"-supplierSyscoID",supplierSyscoID);
+
       console.log(`Product with ID ${productId} added to cart`);
       console.log(`Product with sessionId ${sessionId} added to cart`);
 
@@ -205,32 +208,39 @@ const Home = () => {
                 
         )}
         {
-            (userRole === 'customer') && (
+            userRole === 'customer' && (
                 <div className="row">
-                    {products.map((product) => (
-                        <div className="col-md-3 col-sm-6 col-12" key={product.productID}>
-                            <a href='#'><div className="info-box">
-                                <div className="info-box-content">
-                                <span ><img src={productImage} alt={product.productName} />
-                                </span>
-                                    <span className="info-box-text">{product.productName}</span>
-                                    <span className="info-box-price">${product.productPrice}</span>
-                                    <Button
-                                    style={{ width: "100%", fontSize:'16px'}}
-                                    type="primary"
-                                    htmlType="button"
-                                    onClick={() => handleAddToCart(product.productSyscoID, product.productName, product.productPrice)}
-                                  >
-                                    Add To Cart
-                                  </Button>
-                                </div>
+                    {products.map((product) => {
+                        // Corrected the logic for removing items from localStorage
+                        // const supplierName = localStorage.removeItem(product.productSyscoID + "-supplierName");
+                        // const supplierSyscoID = localStorage.removeItem(product.productSyscoID + "-supplierSyscoID");
+
+                        return (
+                            <div className="col-md-3 col-sm-6 col-12" key={product.productID}>
+                                <a href='#'>
+                                    <div className="info-box">
+                                        <div className="info-box-content">
+                                            <span><img src={productImage} alt={product.productName} /></span>
+                                            <span className="info-box-text">{product.productName}</span>
+                                            <span className="info-box-price">${product.productPrice}</span>
+                                            <Button
+                                                style={{ width: "100%", fontSize: '16px' }}
+                                                type="primary"
+                                                htmlType="button"
+                                                onClick={() => handleAddToCart(product.productSyscoID, product.productName, product.productPrice, product.supplierSyscoID, product.supplierName)}
+                                            >
+                                                Add To Cart
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                            </a>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )
         }
+
 </>
   );
 };

@@ -27,9 +27,9 @@ const Order = () => {
   let pathArr = pathname.split("/");
   let orderId = pathArr.length >= 4 ? pathArr[2] : "";
   const isCustomer = (localStorage.getItem("userRole") === "customer");
-  const isEditable = (orderId == "");
 
   const { selectedOrder, selectedCart } = useSelector((state) => (state.orders ? state.orders : {}));
+  const isEditable = (orderId == "");
 
   
   const orderStatus = ["placed","cancelled"];
@@ -165,16 +165,20 @@ const Order = () => {
     } else {
 
       let orderItem = [];
-
+      let supplierName = "";
+      let supplierSyscoID = "";
       if (selectedCart.cartDTOList) {
           for(let i = 0; i < selectedCart.cartDTOList.length; i++) {
+            supplierName = localStorage.getItem(selectedCart.cartDTOList[i].productSyscoID+"-supplierName");
+            supplierSyscoID = localStorage.getItem(selectedCart.cartDTOList[i].productSyscoID+"-supplierSyscoID");
+
             orderItem.push({
               price : selectedCart.cartDTOList[i].price,
               productName : selectedCart.cartDTOList[i].productName,
               productSyscoID : selectedCart.cartDTOList[i].productSyscoID,
               quantity : selectedCart.cartDTOList[i].quantity,
-              supplierName : "test",
-              supplierSyscoID : "test",
+              supplierName : supplierName,
+              supplierSyscoID : supplierSyscoID,
             });
           }
       }
@@ -240,7 +244,7 @@ const Order = () => {
                       },
                     ]}
                   >
-                    <TextArea placeholder="Delivery Address" style={{ width: "70%" , height: "139px"}} />
+                    <TextArea readOnly={!(isEditable || (selectedOrder != null && selectedOrder.orderStaus == "placed"))} placeholder="Delivery Address" style={{ width: "70%" , height: "139px"}} />
                   </Form.Item>
                   <Form.Item
                     name="deliveryDate"
@@ -253,6 +257,7 @@ const Order = () => {
                   >
                     <DatePicker
                       placeholder="Delivery Date"
+                      disabled={!(isEditable || (selectedOrder != null && selectedOrder.orderStaus == "placed"))}
                       style={{ width: "20%", minWidth: "200px" }}
                       format={dateFormat}
                     />
@@ -266,7 +271,7 @@ const Order = () => {
                       />
                     </div>
                   </Form.Item>
-                  {(isCustomer && selectedOrder != null && selectedOrder.orderStatus == "placed") && (
+                  {((isCustomer && selectedOrder != null && selectedOrder.orderStatus == "placed")) ? (
                       <Form.Item
                       name="orderStatus"
                       rules={[
@@ -286,7 +291,12 @@ const Order = () => {
                         }))}
                       />
                     </Form.Item>
+                  ) : (
+                    <Form.Item className="right">
+                     <label>Order Status : </label><b>{(selectedOrder != null && selectedOrder.orderStatus ? selectedOrder.orderStatus : "")}</b>
+                    </Form.Item>
                   )}
+
                   <Form.Item className="right">
                       <h3>Total Price : $ { (orderId) ? ((selectedOrder && selectedOrder.totalPrice) ? selectedOrder.totalPrice : "") : (selectedCart && selectedCart.totalPrice) ? selectedCart.totalPrice : "" }</h3>
                   </Form.Item>

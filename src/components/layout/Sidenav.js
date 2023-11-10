@@ -203,7 +203,7 @@ function Sidenav({ color }) {
           }
         >
           <Menu.Item
-            key="7.2"
+            key="8.2"
             style={{
               display:
                 permissions &&

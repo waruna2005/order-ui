@@ -6,13 +6,13 @@ import {
   updateOrderApiByCustomer,
   getOrderSupplier,
   getOrdersForSupplier,
-  updateProductApiBySupplier,
   createOrderApi,
   deleteOrderApi,
   createCartApi,
   getCartById,
   updateCartApi,
-  deleteCartApi
+  deleteCartApi,
+  updateOrderApiBySupplier
 } from "../../api/order";
 
 let initialState = {
@@ -175,6 +175,25 @@ export const fetchOrderList = (id) => async (dispatch) => {
   }
 };
 
+export const fetchSupplierOrderList = (query) => async (dispatch) => {
+  dispatch(fetchOrderStart());
+  try {
+    const response = await getOrdersForSupplier(query);
+    const orders = response.data ? response.data : null;
+    if (orders != null && response.code == 200) {
+      dispatch(fetchOrdersSuccess(response));
+    } else {
+      dispatch(fetchOrdersFail());
+      toast.error(response.message);
+    }
+  } catch (error) {
+    let msg = "Something went wrong";
+    toast.error(msg);
+
+    dispatch(fetchOrdersFail());
+  }
+};
+
 export const fetchOrder = (id) => async (dispatch) => {
   dispatch(fetchOrderStart());
   try {
@@ -231,6 +250,26 @@ export const updateOrder = (_id, data) => async (dispatch) => {
     dispatch(fetchOrderFail());
   }
 };
+
+export const updateOrderBySupplier = (_id, data) => async (dispatch) => {
+  dispatch(fetchOrderStart());
+  try {
+    const response = await updateOrderApiBySupplier(_id, data);
+    const order = response.data ? response.data : null;
+    if (order != null) {
+      toast.success("Sucessfuly Updated!");
+    } else {
+      dispatch(fetchOrderFail());
+      toast.error(response.message);
+    }
+  } catch (error) {
+    let msg = error || "Something went wrong";
+    toast.error(msg);
+
+    dispatch(fetchOrderFail());
+  }
+};
+
 
 export const deleteOrder = (id) => async (dispatch) => {
   dispatch(fetchOrderStart());

@@ -172,7 +172,7 @@ function Header({
           </Badge>{" "}
           */}
           <Button type="link" onClick={() => goToCart()}>
-              <i style={{fontSize:"24px"}} class="fa fa-shopping-cart"></i>
+              <i style={{fontSize:"24px"}} className="fa fa-shopping-cart"></i>
           </Button>
          
           <Button

@@ -7,7 +7,10 @@ import {
   Input,
   Select,
   Layout,
+  Upload
 } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
+
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -77,6 +80,13 @@ const Product = () => {
     console.log("Failed:", errorInfo);
   };
 
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+  
   return (
     <>
       <div className="layout-content">
@@ -138,6 +148,21 @@ const Product = () => {
                     ]}
                   >
                     <Input readOnly={isAdmin} placeholder="Product Price" style={{ width: "20%"}} />
+                  </Form.Item>
+                  <Form.Item
+                    name="productImage"
+                    label="Product Image"
+                    valuePropName="fileList"
+                    getValueFromEvent={normFile}
+                    extra="Upload an image for the product"
+                  >
+                    <Upload
+                      name="productImage"
+                      action="/upload"  // Replace with your actual upload endpoint
+                      listType="picture"
+                    >
+                      <Button icon={<UploadOutlined />}>Click to upload</Button>
+                    </Upload>
                   </Form.Item>
                   <Form.Item
                     name="productStatus"

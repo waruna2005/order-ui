@@ -10,12 +10,14 @@ import {
   Table,
   DatePicker,
   Alert,
-  Space
+  Space,
+  Checkbox,
+  Modal
 } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchOrderList,deleteOrder } from "./orderSlice";
+import { fetchOrderList, fetchSupplierOrderList, deleteOrder,updateOrderBySupplier } from "./orderSlice";
 import { showHideLoading } from "../../utils/HandleLoading";
 import moment from "moment";
 
@@ -42,7 +44,15 @@ const OrderList = () => {
   + "&size=1000";
 
   const fetchData = async () => {
-    await dispatch(fetchOrderList(query));
+    if (userRole == "supplier") {
+      query = "sysco_id="+localStorage.getItem("userSyscoID")
+      +"&supply_status=0"
+      + "&page=0"
+      + "&size=10000";
+      await dispatch(fetchSupplierOrderList(query));
+    } else {
+      await dispatch(fetchOrderList(query));
+    }
   };
 
   useEffect(() => {
@@ -50,60 +60,159 @@ const OrderList = () => {
   }, []);
 
   const status = ["placed", "completed", "cancelled"];
-  const columns = [
-    {
-      title: "Order Id",
-      dataIndex: "id",
-      key: "id",
-      onFilter: (value, order) => order.id.indexOf(value) === 0,
-      sorter: (a, b) => a.id.length - b.id.length,
-    },
-    {
-      title: "Delevery Date",
-      dataIndex: "deliveryDate",
-      key: "productSyscoID",
-      onFilter: (value, order) => order.deliveryDate.indexOf(value) === 0,
-      sorter: (a, b) => a.deliveryDate.length - b.deliveryDate.length,
-    },
-    {
-      title: "Order Status",
-      dataIndex: "orderStatus",
-      filterMultiple: false,
-      onFilter: (value, record) => record.orderStatus.indexOf(value) === 0,
-      sorter: (a, b) => a.orderStatus.length - b.orderStatus.length,
-    },
-    {
-      title: "Total Products",
-      dataIndex: "totalProducts",
-      filterMultiple: false,
-      onFilter: (value, record) => record.totalProducts.indexOf(value) === 0,
-      sorter: (a, b) => a.totalProducts.length - b.totalProducts.length,
-    },
-    {
-      title: "Actions",
-      render: (_, record) => (
-        <Space size="middle">
-          {permissions &&
-          permissions["orders"]["view"].indexOf(userRole) !== -1 ? (
-            <a href={"/order/" + record.id+"/view"}>Go To Order</a>
-          ) : (
-            ""
-          )}
-        </Space>
-      ),
-    },
-  ];
+  const supplierStatus = ["no","yes"];
+  
+  let columns = [];
+  if (userRole == "supplier") {
+    columns = [
+      {
+        title: "Order Id",
+        dataIndex: "orderDetailsID",
+        key: "orderDetailsID",
+        onFilter: (value, order) => order.orderDetailsID.indexOf(value) === 0,
+        sorter: (a, b) => a.orderDetailsID.length - b.orderDetailsID.length,
+      },
+      {
+        title: "Customer Sysco ID",
+        dataIndex: "customerSyscoID",
+        key: "customerSyscoID",
+        onFilter: (value, order) => order.customerSyscoID.indexOf(value) === 0,
+        sorter: (a, b) => a.customerSyscoID.length - b.customerSyscoID.length,
+      },
+      {
+        title: "Customer Name",
+        dataIndex: "customerName",
+        key: "customerName",
+        onFilter: (value, order) => order.customerName.indexOf(value) === 0,
+        sorter: (a, b) => a.customerName.length - b.customerName.length,
+      },
+      {
+        title: "Delivery Date",
+        dataIndex: "deliveryDate",
+        filterMultiple: false,
+        onFilter: (value, record) => record.deliveryDate.indexOf(value) === 0,
+        sorter: (a, b) => a.deliveryDate.length - b.deliveryDate.length,
+      },
+      {
+        title: "Delivery Address",
+        dataIndex: "deliveryAddress",
+        filterMultiple: false,
+        onFilter: (value, record) => record.deliveryAddress.indexOf(value) === 0,
+        sorter: (a, b) => a.deliveryAddress.length - b.deliveryAddress.length,
+      },
+      {
+        title: "Delivery Address",
+        dataIndex: "productName",
+        filterMultiple: false,
+        onFilter: (value, record) => record.productName.indexOf(value) === 0,
+        sorter: (a, b) => a.productName.length - b.productName.length,
+      },
+      {
+        title: "Quantity",
+        dataIndex: "quantity",
+        filterMultiple: false,
+        onFilter: (value, record) => record.quantity.indexOf(value) === 0,
+        sorter: (a, b) => a.quantity.length - b.quantity.length,
+      },
+      {
+        title: "Is Supply",
+        render: (_, record) => (
+            <Space size="middle">
+                {permissions &&
+                permissions["orders"]["view"].indexOf(userRole) !== -1 ? (
+                    <>
+                        <Checkbox
+                            onChange={(e) => handleCheckboxChange(record.orderDetailsID, e.target.checked)}
+                        />
+                    </>
+                ) : (
+                    ""
+                )}
+            </Space>
+        ),
+    }
+    ];
+  } else {
+    
+    columns = [
+      {
+        title: "Order Id",
+        dataIndex: "id",
+        key: "id",
+        onFilter: (value, order) => order.id.indexOf(value) === 0,
+        sorter: (a, b) => a.id.length - b.id.length,
+      },
+      {
+        title: "Delevery Date",
+        dataIndex: "deliveryDate",
+        key: "productSyscoID",
+        onFilter: (value, order) => order.deliveryDate.indexOf(value) === 0,
+        sorter: (a, b) => a.deliveryDate.length - b.deliveryDate.length,
+      },
+      {
+        title: "Order Status",
+        dataIndex: "orderStatus",
+        filterMultiple: false,
+        onFilter: (value, record) => record.orderStatus.indexOf(value) === 0,
+        sorter: (a, b) => a.orderStatus.length - b.orderStatus.length,
+      },
+      {
+        title: "Total Products",
+        dataIndex: "totalProducts",
+        filterMultiple: false,
+        onFilter: (value, record) => record.totalProducts.indexOf(value) === 0,
+        sorter: (a, b) => a.totalProducts.length - b.totalProducts.length,
+      },
+      {
+        title: "Actions",
+        render: (_, record) => (
+          <Space size="middle">
+            {permissions &&
+            permissions["orders"]["view"].indexOf(userRole) !== -1 ? (
+              <a href={"/order/" + record.id+"/view"}>Go To Order</a>
+            ) : (
+              ""
+            )}
+          </Space>
+        ),
+      },
+    ];
+  }
+
 
   const onFinish = async (values) => {
-    query = "sysco_id="+localStorage.getItem("userSyscoID")
-    +"&order_status="+(values.orderStatus ?? "placed")
-    + "&page=0"
-    + "&size=1000";
-    dispatch(fetchOrderList(query));
+
+    if (userRole == "supplier") {
+      query = "sysco_id="+localStorage.getItem("userSyscoID")
+      +"&supply_status="+(values.supplierStatus == "yes" ? 1 : 0)
+      + "&page=0"
+      + "&size=10000";
+      dispatch(fetchSupplierOrderList(query));
+    } else {
+      query = "sysco_id="+localStorage.getItem("userSyscoID")
+      +"&order_status="+(values.orderStatus ?? "placed")
+      + "&page=0"
+      + "&size=1000";
+      dispatch(fetchOrderList(query));
+    }
   };
 
   const onFinishFailed = async (values) => {
     
+  };
+
+  const handleCheckboxChange = (id, isChecked) => {
+      Modal.confirm({
+          title: 'Confirm',
+          content: 'Are you sure you want to update the suppler status?',
+          onOk: async () => {
+              // Dispatch the update action if the user clicks 'OK'
+              await dispatch(updateOrderBySupplier(id, { isChecked }));
+          },
+          onCancel: () => {
+              // Handle cancel if needed
+          },
+      });
   };
 
   const onChange = (pagination, filters, sorter) => {
@@ -130,38 +239,68 @@ const OrderList = () => {
         }}
       >
         <Row gutter={16} align="middle">
-          <Col span={6}>
-            <Form.Item
-              name="orderStatus"
-            >
-              <Select
-                placeholder="Order Status"
-                allowClear
-                style={{ width: '100%' }}
-                options={status.map((sta) => ({
-                  value: sta,
-                  label: sta,
-                }))}
-              />
-            </Form.Item>
+          <Col span={9}>
+          {((userRole == "supplier")) ? (
+                      <Form.Item
+                      name="supplierStatus"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select supplier status",
+                        },
+                      ]}
+                    >
+                      <Select
+                        placeholder="Supplier Status"
+                        allowClear
+                        style={{ width: '40%' }}
+                        options={supplierStatus.map((sta) => ({
+                          value: sta,
+                          label: sta,
+                        }))}
+                      />
+                    </Form.Item>
+                  ) : (
+                    <Form.Item
+                    name="orderStatus"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select order status",
+                      },
+                    ]}
+                  >
+                    <Select
+                      placeholder="Order Status"
+                      allowClear
+                      style={{ width: '20%' }}
+                      options={orderStatus.map((sta) => ({
+                        value: sta,
+                        label: sta,
+                      }))}
+                    />
+                  </Form.Item>
+                  )}
+                  <Form.Item className="right">
+                      <Button
+                        style={{ width: "20%" }}
+                        type="primary"
+                        htmlType="submit"
+                      >
+                        Search
+                      </Button>
+                  </Form.Item>
           </Col>
-          <Col span={6} style={{ display: 'flex', justifyContent: 'left' }}>
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  Search
-                </Button>
-              </Form.Item>
-          </Col>
-
         </Row>
       </Form>
     </Card>
         </div>
       </div>
+      
       <div className="layout-content">
         <Table
           pagination={{ pageSize: 5 }}
-          rowKey="id"
+          rowKey={(userRole == "supplier") ? "orderDetailsID" : "id"}
           columns={columns}
           dataSource={orders}
           onChange={onChange}

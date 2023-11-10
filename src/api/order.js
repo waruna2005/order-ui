@@ -68,8 +68,8 @@ export const getOrdersForSupplier = async (query = "") => {
   return result;
 };
 
-export const updateProductApiBySupplier = async (data) => {
-  const response = await fetch(`${REACT_APP_API_ORDER}/supplier-dashboard/update`, {
+export const updateOrderApiBySupplier = async (id, data) => {
+  const response = await fetch(`${REACT_APP_API_ORDER}/supplier-dashboard/update?id=${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
