@@ -6,14 +6,18 @@ import {
   Button,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCart, createCart, updateCart } from "../order/orderSlice";
+import { fetchCart, createCart, fetchSupplierOrderList } from "../order/orderSlice";
 import productImage from "../../assets/images/dummy.jpeg";
 import { v4 as uuidv4 } from 'uuid';
+import { baseUrl } from "../../config/config";
 
 const Home = () => {
     const dispatch = useDispatch();
     const { products, loading } = useSelector((state) =>
         state.products ? state.products : []
+    );
+    const { orders, loadingOrder } = useSelector((state) =>
+      state.orders ? state.orders : []
     );
 
     const { users, userListLoading } = useSelector((state) =>
@@ -35,21 +39,31 @@ const Home = () => {
 
     let userquery = "userRole=all&userStatus=all&page=0&size=10000"
 
+    let supQuery  = "sysco_id="+localStorage.getItem("userSyscoID")
+    +"&supply_status=0"
+    + "&page=0"
+    + "&size=10000";
+
     const fetchData = async () => {
       await dispatch(fetchProductList(query));
       await dispatch(fetchUserList(userquery));
+      await dispatch(fetchSupplierOrderList(supQuery))
     };
 
     useEffect(() => {
       fetchData();
     }, []);
 
-  const approvedProductsCount = products.filter(product => product.productApproval === 'approved').length;
-  const pendingProductsCount = products.filter(product => product.productApproval === 'pending').length;
-  const notApprovedProductsCount = products.filter(product => product.productApproval === 'not').length;
+  const approvedProductsCount = (products != null) ? products.filter(product => product.productApproval === 'approved').length : 0;
+  const pendingProductsCount = (products != null) ? products.filter(product => product.productApproval === 'pending').length : 0;
+  const notApprovedProductsCount = (products != null) ? products.filter(product => product.productApproval === 'not').length : 0;
 
-  const activeUserCount = users.filter(user => user.userStatus === 'active').length;
-  const pendingUserCount = users.filter(user => user.userStatus === 'inactive').length;
+  const supplyOrdersCount = (orders != null) ? orders.filter(order => order.supplyStatus === true).length : 0;
+  const pendingOrdersCount = (orders != null) ? orders.filter(order => order.supplyStatus === false).length : 0;
+
+  const activeUserCount = (users != null) ? users.filter(user => user.userStatus === 'active').length : 0;
+  const pendingUserCount = (users != null) ? users.filter(user => user.userStatus === 'inactive').length : 0;
+
   const totalUserCount = users.length;
 
   const handleAddToCart = (productId, productName, productPrice, supplierSyscoID, supplierName) => {
@@ -144,6 +158,50 @@ const Home = () => {
                 </div>
                 
         )}
+
+        {(userRole === 'supplier') && (
+          <div className="row">
+            <div className="col-md-6 col-sm-6 col-12">
+              <div className="info-box bg-warning">
+                <span className="info-box-icon">
+                  <i className="far fa-star" aria-hidden="true"></i>
+                </span>
+
+                <div className="info-box-content">
+                  <span className="info-box-text">Pending Orders</span>
+                  <span className="info-box-number">{pendingOrdersCount}</span>
+
+                  <div className="progress">
+                    <div className="progress-bar"></div>
+                  </div>
+                  <span className="progress-description">
+                  Waiting to be sent from the supplier
+                  </span>
+                  <span className="progress-description"><a  href="/order/list?supply_status=0"> More detail</a></span>
+                </div>
+              </div>
+            </div>
+          <div className="col-md-6 col-sm-6 col-12">
+              <div className="info-box bg-success">
+                <span className="info-box-icon">
+                  <i className="far fa-thumbs-up"></i>
+                </span>
+
+                <div className="info-box-content">
+                  <span className="info-box-text">Supply Orders</span>
+                  <span className="info-box-number">{supplyOrdersCount}</span>
+
+                  <div className="progress">
+                    <div className="progress-bar"></div>
+                  </div>
+                  <span className="progress-description">Already dispatched from the supplier</span>
+                  <span className="progress-description"><a  href="/order/list?supply_status=1"> More detail</a></span>
+                </div>
+              </div>
+            </div>
+            </div>
+        )}
+
         {(userRole === 'admin') && (
           <div className="row">
               <div className="col-md-4 col-sm-6 col-12">
@@ -220,7 +278,7 @@ const Home = () => {
                                 <a href='#'>
                                     <div className="info-box">
                                         <div className="info-box-content">
-                                            <span><img src={productImage} alt={product.productName} /></span>
+                                            <span><img src={(product.productImage == "no image" ? productImage : (baseUrl+"/uploads/"+product.productImage))} alt={product.productName} /></span>
                                             <span className="info-box-text">{product.productName}</span>
                                             <span className="info-box-price">${product.productPrice}</span>
                                             <Button

@@ -15,6 +15,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { createProduct, updateProduct, fetchProduct, fetchProductStatus, fetchProductAproval } from "./productSlice";
+import { baseUrl } from "../../config/config";
 
 const { Content } = Layout;
 const { TextArea } = Input;
@@ -65,7 +66,7 @@ const Product = () => {
 
   const onFinish = async (values) => {
     values.supplierSyscoID = localStorage.getItem("userSyscoID");
-    values.productImage = "no image";
+    values.productImage = (values.productImage ? values.productImage[0].name : "no image");
     values.supplierName = localStorage.getItem("firstName");
 
     if (productId !== "") {
@@ -86,7 +87,8 @@ const Product = () => {
     }
     return e && e.fileList;
   };
-  
+
+  const uploadAction = baseUrl+"/upload";
   return (
     <>
       <div className="layout-content">
@@ -158,7 +160,7 @@ const Product = () => {
                   >
                     <Upload
                       name="productImage"
-                      action="/upload"  // Replace with your actual upload endpoint
+                      action= {uploadAction} // Replace with your actual upload endpoint
                       listType="picture"
                     >
                       <Button icon={<UploadOutlined />}>Click to upload</Button>

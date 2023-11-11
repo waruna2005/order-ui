@@ -35,6 +35,8 @@ const OrderList = () => {
 
   const urlParams = new URLSearchParams(window.location.search);
   const orderStatus = (urlParams.get("orderStatus")) ? urlParams.get("orderStatus") : 'placed'
+  const supplyStatus = (urlParams.get("supply_status")) ? urlParams.get("supply_status") : 0
+
 
 
   showHideLoading(loading);
@@ -46,7 +48,7 @@ const OrderList = () => {
   const fetchData = async () => {
     if (userRole == "supplier") {
       query = "sysco_id="+localStorage.getItem("userSyscoID")
-      +"&supply_status=0"
+      +"&supply_status="+supplyStatus
       + "&page=0"
       + "&size=10000";
       await dispatch(fetchSupplierOrderList(query));
