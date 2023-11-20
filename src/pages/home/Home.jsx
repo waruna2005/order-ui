@@ -47,7 +47,10 @@ const Home = () => {
     const fetchData = async () => {
       await dispatch(fetchProductList(query));
       await dispatch(fetchUserList(userquery));
-      await dispatch(fetchSupplierOrderList(supQuery))
+      if (userRole == "supplier") {
+        await dispatch(fetchSupplierOrderList(supQuery));
+      }
+      
     };
 
     useEffect(() => {
@@ -272,8 +275,8 @@ const Home = () => {
                         // Corrected the logic for removing items from localStorage
                         // const supplierName = localStorage.removeItem(product.productSyscoID + "-supplierName");
                         // const supplierSyscoID = localStorage.removeItem(product.productSyscoID + "-supplierSyscoID");
-
-                        return (
+                        if (product.productStatus == "available") {
+                          return (
                             <div className="col-md-3 col-sm-6 col-12" key={product.productID}>
                                 <a href='#'>
                                     <div className="info-box">
@@ -294,6 +297,8 @@ const Home = () => {
                                 </a>
                             </div>
                         );
+                        }
+
                     })}
                 </div>
             )

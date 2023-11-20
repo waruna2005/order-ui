@@ -128,7 +128,8 @@ function Header({
   const goToCart = () => {
     window.location.href = "/order/create";
   };
-    
+  
+  const _userRole = localStorage.getItem("userRole");
   return (
     <>
       <Row gutter={[24, 0]}>
@@ -171,9 +172,12 @@ function Header({
             </Dropdown>
           </Badge>{" "}
           */}
-          <Button type="link" onClick={() => goToCart()}>
-              <i style={{fontSize:"24px"}} className="fa fa-shopping-cart"></i>
-          </Button>
+          {(_userRole === 'customer') && (
+              <Button type="link" onClick={() => goToCart()}>
+                  <i style={{fontSize:"24px"}} className="fa fa-shopping-cart"></i>
+              </Button>
+          )};
+
          
           <Button
             type="link"

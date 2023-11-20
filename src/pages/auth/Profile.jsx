@@ -84,7 +84,7 @@ const Profile = () => {
                   { required: true, message: "Please input your email!" },
                 ]}
               >
-                <Input placeholder="user Sysco ID" />
+                <Input readOnly={true} placeholder="user Sysco ID" />
               </Form.Item>
               <Form.Item
                 name="userEmail"
