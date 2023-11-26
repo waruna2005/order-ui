@@ -69,7 +69,6 @@ const User = () => {
   }, [dispatch, selectedUser]);
 
   const onFinish = async (values) => {
-
     let roleObject = roles.filter((role) => {
       return role.value === values.userRole ? role.key : "";
     });
@@ -82,6 +81,8 @@ const User = () => {
     values.userStatus = statusObject.length > 0 ? statusObject[0].key : "";
 
     if (userId !== "") {
+      delete values.userPassword;
+      delete values.confirmPassword;
       await dispatch(updateUser(userId, values));
     } else {
       await dispatch(createUser(values));

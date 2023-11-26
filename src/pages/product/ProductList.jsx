@@ -40,8 +40,11 @@ const ProductList = () => {
       title: "Product Id",
       dataIndex: "productID",
       key: "productID",
-      onFilter: (value, product) => product.productID.indexOf(value) === 0,
-      sorter: (a, b) => a.productID.length - b.productID.length,
+      render: (_, record) => (
+        <Space size="middle">
+            <a href={"/product/" + record.productID + "/view"}>{record.productID}</a>
+        </Space>
+      ),
     },
     {
       title: "Product Sysco ID",

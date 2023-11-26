@@ -278,7 +278,7 @@ const Home = () => {
                         if (product.productStatus == "available") {
                           return (
                             <div className="col-md-3 col-sm-6 col-12" key={product.productID}>
-                                <a href='#'>
+                                <a href={"/product/" + product.productID + "/view"}>
                                     <div className="info-box" >
                                         <div className="info-box-content" style={{ width: '100%', height: '100%' }}>
                                             <span><img style={{ width: '500px', height: '500px' }} src={(product.productImage === "no image" ? productImage : (baseUrl+"/uploads/"+product.productImage))} alt={product.productName} /></span>

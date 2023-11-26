@@ -33,7 +33,7 @@ const OrderList = () => {
   const userRole = localStorage.getItem("userRole");
   const isAdmin = (userRole === "admin");
 
-  const orderStatusList = ["placed","cancelled"];
+  const orderStatusList = ["placed","cancelled", "patial_supply"];
   const urlParams = new URLSearchParams(window.location.search);
   const orderStatus = (urlParams.get("orderStatus")) ? urlParams.get("orderStatus") : 'placed'
   const supplyStatus = (urlParams.get("supply_status")) ? urlParams.get("supply_status") : 0
@@ -62,7 +62,7 @@ const OrderList = () => {
     fetchData();
   }, []);
 
-  const status = ["placed", "completed", "cancelled"];
+  const status = ["placed", "completed", "cancelled", "patial_supply"];
   const supplierStatus = ["no","yes"];
   
   let columns = [];
@@ -74,13 +74,6 @@ const OrderList = () => {
         key: "orderDetailsID",
         onFilter: (value, order) => order.orderDetailsID.indexOf(value) === 0,
         sorter: (a, b) => a.orderDetailsID.length - b.orderDetailsID.length,
-      },
-      {
-        title: "Customer Sysco ID",
-        dataIndex: "customerSyscoID",
-        key: "customerSyscoID",
-        onFilter: (value, order) => order.customerSyscoID.indexOf(value) === 0,
-        sorter: (a, b) => a.customerSyscoID.length - b.customerSyscoID.length,
       },
       {
         title: "Customer Name",
@@ -104,11 +97,18 @@ const OrderList = () => {
         sorter: (a, b) => a.deliveryAddress.length - b.deliveryAddress.length,
       },
       {
-        title: "Delivery Address",
+        title: "Product Name",
         dataIndex: "productName",
         filterMultiple: false,
         onFilter: (value, record) => record.productName.indexOf(value) === 0,
         sorter: (a, b) => a.productName.length - b.productName.length,
+      },
+      {
+        title: "Supply Status",
+        dataIndex: "supplyStatus",
+        filterMultiple: false,
+        onFilter: (value, record) => record.supplyStatus.indexOf(value) === 0,
+        sorter: (a, b) => a.supplyStatus.length - b.supplyStatus.length,
       },
       {
         title: "Quantity",
@@ -158,6 +158,10 @@ const OrderList = () => {
         filterMultiple: false,
         onFilter: (value, record) => record.orderStatus.indexOf(value) === 0,
         sorter: (a, b) => a.orderStatus.length - b.orderStatus.length,
+        render: (_, record) => (
+          <Space size="middle">{(record.orderStatus).replace("_","")}
+          </Space>
+        ),
       },
       {
         title: "Total Products",
@@ -210,7 +214,7 @@ const OrderList = () => {
           content: 'Are you sure you want to update the suppler status?',
           onOk: async () => {
               // Dispatch the update action if the user clicks 'OK'
-              await dispatch(updateOrderBySupplier(id, { isChecked }));
+              await dispatch(updateOrderBySupplier(id, { supplyStatus:isChecked  }));
           },
           onCancel: () => {
               // Handle cancel if needed

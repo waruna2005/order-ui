@@ -182,7 +182,7 @@ export const updateUser = (_id, data) => async (dispatch) => {
   dispatch(fetchUserStart());
   try {
     if (
-      !validator.isStrongPassword(data.userPassword, {
+      data.userPassword && !validator.isStrongPassword(data.userPassword, {
         minLength: 6,
         minLowercase: 1,
         minUppercase: 0,

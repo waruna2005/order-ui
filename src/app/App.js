@@ -11,6 +11,7 @@ import SignUp from "../pages/auth/SignUp";
 import User from "../pages/user/User";
 import UserList from "../pages/user/UserList";
 import Product from "../pages/product/Product";
+import ProductView from "../pages/product/ProductView";
 import ProductList from "../pages/product/ProductList";
 import PrivateRoute from "./PrivateRoute";
 import AuthVerify from "../components/common/authverify";
@@ -54,6 +55,9 @@ function App() {
           </PrivateRoute>
           <PrivateRoute path="/product/:id/edit">
             <Product />
+          </PrivateRoute>
+          <PrivateRoute path="/product/:id/view">
+            <ProductView />
           </PrivateRoute>
           <PrivateRoute path="/order/create">
             <Order />
