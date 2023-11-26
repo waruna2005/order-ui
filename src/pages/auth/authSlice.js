@@ -65,6 +65,7 @@ export const fetchUser = (data) => async (dispatch) => {
       localStorage.setItem("lastName", user.userLastName ? user.userLastName : "");
       localStorage.setItem("userSyscoID", user.userSyscoID ? user.userSyscoID : "");
       localStorage.setItem("userRole", user.userRole ? user.userRole : "");
+      localStorage.setItem("token", user.token ? user.token : "");
       dispatch(fetchUserSuccess(response));
     } else {
       dispatch(fetchUserFail());
@@ -85,6 +86,7 @@ export const logout = () => async (dispatch) => {
     localStorage.removeItem("lastName");
     localStorage.removeItem("userSyscoID");
     localStorage.removeItem("userRole");
+    localStorage.removeItem("token");
     dispatch(logoutUser());
   } catch (error) {
     console.log("error", error);

@@ -33,6 +33,7 @@ const OrderList = () => {
   const userRole = localStorage.getItem("userRole");
   const isAdmin = (userRole === "admin");
 
+  const orderStatusList = ["placed","cancelled"];
   const urlParams = new URLSearchParams(window.location.search);
   const orderStatus = (urlParams.get("orderStatus")) ? urlParams.get("orderStatus") : 'placed'
   const supplyStatus = (urlParams.get("supply_status")) ? urlParams.get("supply_status") : 0
@@ -276,7 +277,7 @@ const OrderList = () => {
                       placeholder="Order Status"
                       allowClear
                       style={{ width: '20%' }}
-                      options={orderStatus.map((sta) => ({
+                      options={orderStatusList.map((sta) => ({
                         value: sta,
                         label: sta,
                       }))}
