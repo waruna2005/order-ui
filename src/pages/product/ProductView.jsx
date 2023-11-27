@@ -43,6 +43,7 @@ const ProductView = () => {
   let productMeasuringUnit = selectedProduct ?  selectedProduct.productMeasuringUnit : "";
   let productPrice = selectedProduct ?  selectedProduct.productPrice : "";
   let productStatus = selectedProduct ?  selectedProduct.productStatus : "";
+  let supplierName = selectedProduct ?  selectedProduct.supplierName : "";
   let productImage = selectedProduct ?  selectedProduct.productImage : "";
 
 
@@ -71,8 +72,8 @@ const ProductView = () => {
             <label htmlFor="productPrice">Product Price:&nbsp;&nbsp;</label>
             <span id="productPrice">{productPrice}</span><br/><br/>
 
-            <label htmlFor="productImage">Product Image:&nbsp;&nbsp;</label>
-            {/* Display product image here */}<br/><br/>
+            <label htmlFor="productPrice">Supplier Name:&nbsp;&nbsp;</label>
+            <span id="productPrice">{supplierName}</span><br/><br/>
 
             <label htmlFor="productStatus">Product Status:&nbsp;&nbsp;</label>
             <span id="productStatus">{productStatus}</span><br/><br/>

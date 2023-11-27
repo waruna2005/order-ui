@@ -51,6 +51,13 @@ const Order = () => {
       sorter: (a, b) => a.productSyscoID.length - b.productSyscoID.length,
     },
     {
+      title: "Supplier Name",
+      dataIndex: "supplierName",
+      filterMultiple: false,
+      onFilter: (value, record) => record.supplierName.indexOf(value) === 0,
+      sorter: (a, b) => a.supplierName.length - b.supplierName.length,
+    },
+    {
       title: "Product Name",
       dataIndex: "productName",
       filterMultiple: false,

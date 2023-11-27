@@ -33,7 +33,7 @@ const OrderList = () => {
   const userRole = localStorage.getItem("userRole");
   const isAdmin = (userRole === "admin");
 
-  const orderStatusList = ["placed","cancelled", "partial_supply"];
+  const orderStatusList = ["placed","cancelled", "partial_supply", "Completetd"];
   const urlParams = new URLSearchParams(window.location.search);
   const orderStatus = (urlParams.get("orderStatus")) ? urlParams.get("orderStatus") : 'placed'
   const supplyStatus = (urlParams.get("supply_status")) ? urlParams.get("supply_status") : 0
@@ -62,7 +62,7 @@ const OrderList = () => {
     fetchData();
   }, []);
 
-  const status = ["placed", "completed", "cancelled", "partial_supply"];
+  const status = ["placed", "completed", "cancelled", "partial_supply", "Completetd"];
   const supplierStatus = ["no","yes"];
   
   let columns = [];
@@ -265,7 +265,7 @@ const OrderList = () => {
                       <Select
                         placeholder="Supplier Status"
                         allowClear
-                        style={{ width: '40%' }}
+                        style={{ width: '50%' }}
                         options={supplierStatus.map((sta) => ({
                           value: sta,
                           label: sta,
@@ -285,7 +285,7 @@ const OrderList = () => {
                     <Select
                       placeholder="Order Status"
                       allowClear
-                      style={{ width: '20%' }}
+                      style={{ width: '50%' }}
                       options={orderStatusList.map((sta) => ({
                         value: sta,
                         label: sta,
