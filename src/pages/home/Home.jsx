@@ -40,7 +40,6 @@ const Home = () => {
     let userquery = "userRole=all&userStatus=all&page=0&size=10000"
 
     let supQuery  = "sysco_id="+localStorage.getItem("userSyscoID")
-    +"&supply_status=0"
     + "&page=0"
     + "&size=10000";
 

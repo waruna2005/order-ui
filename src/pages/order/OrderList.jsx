@@ -33,7 +33,7 @@ const OrderList = () => {
   const userRole = localStorage.getItem("userRole");
   const isAdmin = (userRole === "admin");
 
-  const orderStatusList = ["placed","cancelled", "patial_supply"];
+  const orderStatusList = ["placed","cancelled", "partial_supply"];
   const urlParams = new URLSearchParams(window.location.search);
   const orderStatus = (urlParams.get("orderStatus")) ? urlParams.get("orderStatus") : 'placed'
   const supplyStatus = (urlParams.get("supply_status")) ? urlParams.get("supply_status") : 0
@@ -62,7 +62,7 @@ const OrderList = () => {
     fetchData();
   }, []);
 
-  const status = ["placed", "completed", "cancelled", "patial_supply"];
+  const status = ["placed", "completed", "cancelled", "partial_supply"];
   const supplierStatus = ["no","yes"];
   
   let columns = [];
@@ -72,6 +72,7 @@ const OrderList = () => {
         title: "Order Id",
         dataIndex: "orderDetailsID",
         key: "orderDetailsID",
+        width: '8%',
         onFilter: (value, order) => order.orderDetailsID.indexOf(value) === 0,
         sorter: (a, b) => a.orderDetailsID.length - b.orderDetailsID.length,
       },
@@ -79,6 +80,7 @@ const OrderList = () => {
         title: "Customer Name",
         dataIndex: "customerName",
         key: "customerName",
+        width: '10%',
         onFilter: (value, order) => order.customerName.indexOf(value) === 0,
         sorter: (a, b) => a.customerName.length - b.customerName.length,
       },
@@ -86,12 +88,14 @@ const OrderList = () => {
         title: "Delivery Date",
         dataIndex: "deliveryDate",
         filterMultiple: false,
+        width: '10%',
         onFilter: (value, record) => record.deliveryDate.indexOf(value) === 0,
         sorter: (a, b) => a.deliveryDate.length - b.deliveryDate.length,
       },
       {
         title: "Delivery Address",
         dataIndex: "deliveryAddress",
+        width: '10%',
         filterMultiple: false,
         onFilter: (value, record) => record.deliveryAddress.indexOf(value) === 0,
         sorter: (a, b) => a.deliveryAddress.length - b.deliveryAddress.length,
@@ -99,41 +103,40 @@ const OrderList = () => {
       {
         title: "Product Name",
         dataIndex: "productName",
+        width: '10%',
         filterMultiple: false,
         onFilter: (value, record) => record.productName.indexOf(value) === 0,
         sorter: (a, b) => a.productName.length - b.productName.length,
       },
       {
-        title: "Supply Status",
-        dataIndex: "supplyStatus",
-        filterMultiple: false,
-        onFilter: (value, record) => record.supplyStatus.indexOf(value) === 0,
-        sorter: (a, b) => a.supplyStatus.length - b.supplyStatus.length,
-      },
-      {
         title: "Quantity",
         dataIndex: "quantity",
+        width: '10%',
         filterMultiple: false,
         onFilter: (value, record) => record.quantity.indexOf(value) === 0,
         sorter: (a, b) => a.quantity.length - b.quantity.length,
       },
       {
-        title: "Is Supply",
+        title: "Supply Status",
+        width: '10%',
         render: (_, record) => (
-            <Space size="middle">
-                {permissions &&
-                permissions["orders"]["view"].indexOf(userRole) !== -1 ? (
-                    <>
-                        <Checkbox
-                            onChange={(e) => handleCheckboxChange(record.orderDetailsID, e.target.checked)}
-                        />
-                    </>
-                ) : (
-                    ""
-                )}
-            </Space>
+          <Space size="middle">
+            {permissions &&
+              permissions["orders"]["view"].indexOf(userRole) !== -1 ? (
+                <Select
+                  defaultValue={record.supplyStatus}
+                  onChange={(value) => handleDropdownChange(record.orderDetailsID, value)}
+                  style={{width:'100px'}}
+                >
+                  <Select.Option value="true">true</Select.Option>
+                  <Select.Option value="false">false</Select.Option>
+                </Select>
+              ) : (
+                ""
+              )}
+          </Space>
         ),
-    }
+      }
     ];
   } else {
     
@@ -142,6 +145,7 @@ const OrderList = () => {
         title: "Order Id",
         dataIndex: "id",
         key: "id",
+        width: '10%',
         onFilter: (value, order) => order.id.indexOf(value) === 0,
         sorter: (a, b) => a.id.length - b.id.length,
       },
@@ -159,7 +163,7 @@ const OrderList = () => {
         onFilter: (value, record) => record.orderStatus.indexOf(value) === 0,
         sorter: (a, b) => a.orderStatus.length - b.orderStatus.length,
         render: (_, record) => (
-          <Space size="middle">{(record.orderStatus).replace("_","")}
+          <Space size="middle">{(record.orderStatus) ? (record.orderStatus).replace("_","") : ""}
           </Space>
         ),
       },
@@ -208,7 +212,8 @@ const OrderList = () => {
     
   };
 
-  const handleCheckboxChange = (id, isChecked) => {
+  const handleDropdownChange = (id, isChecked) => {
+    alert(isChecked);
       Modal.confirm({
           title: 'Confirm',
           content: 'Are you sure you want to update the suppler status?',

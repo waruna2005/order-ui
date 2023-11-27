@@ -71,6 +71,7 @@ const Product = () => {
 
     if (productId !== "") {
       values.productApproval = (values.productApproval) ? values.productApproval : selectedProduct.productApproval;
+      values.productSyscoID = (values.productSyscoID) ? values.productSyscoID : selectedProduct.productSyscoID;
       await dispatch(updateProduct(productId, values));
     } else {
       await dispatch(createProduct(values));
@@ -184,22 +185,6 @@ const Product = () => {
                     ></Select>
                   </Form.Item>
                   {isAdmin && (
-                    <Form.Item
-                      name="productSyscoID"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input Sysco Id",
-                        },
-                      ]}
-                    >
-                      <Input 
-                        placeholder="Product Sysco ID" 
-                        style={{ width: "20%" }} 
-                      />
-                    </Form.Item>
-                  )}
-                  {isAdmin && (
                         <Form.Item
                           name="productApproval"
                           rules={[
@@ -216,6 +201,22 @@ const Product = () => {
                             options={aprovals}
                           ></Select>
                         </Form.Item>
+                  )}
+                  {isAdmin && (
+                    <Form.Item
+                      name="productSyscoID"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input Sysco Id",
+                        },
+                      ]}
+                    >
+                      <Input 
+                        placeholder="Product Sysco ID" 
+                        style={{ width: "20%" }} 
+                      />
+                    </Form.Item>
                   )}
                   <Form.Item className="right">
                     <Button

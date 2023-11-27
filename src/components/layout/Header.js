@@ -176,7 +176,7 @@ function Header({
               <Button type="link" onClick={() => goToCart()}>
                   <i style={{fontSize:"24px"}} className="fa fa-shopping-cart"></i>
               </Button>
-          )};
+          )}
 
          
           <Button
@@ -308,7 +308,6 @@ function Header({
                     " " +
                     localStorage.getItem("lastName")}
                 </span>
-                {/* <DownOutlined /> */}
               </Space>
             </a>
           </Dropdown>
