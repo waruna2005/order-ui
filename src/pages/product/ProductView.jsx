@@ -64,7 +64,8 @@ const ProductView = () => {
         productSyscoID: productId,
         productName: productName,
         quantity : 1,
-        price : productPrice
+        price : productPrice,
+        supplierName : supplierName
       };
       localStorage.setItem(productId+"-supplierName",supplierName);
       localStorage.setItem(productId+"-supplierSyscoID",supplierSyscoID);

@@ -223,6 +223,7 @@ const Order = () => {
       productName: data.productName,
       quantity: quantities[data.productSyscoID] ?? data.quantity,
       price: data.price,
+      supplierName : data.supplierName,
     };
     dispatch(updateCart(sessionId, updateData));
     window.location.reload();
