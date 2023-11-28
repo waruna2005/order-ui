@@ -33,7 +33,7 @@ const OrderList = () => {
   const userRole = localStorage.getItem("userRole");
   const isAdmin = (userRole === "admin");
 
-  const orderStatusList = ["placed","cancelled", "partial_supply", "Completetd"];
+  const orderStatusList = ["placed","cancelled", "partial_supply", "completed"];
   const urlParams = new URLSearchParams(window.location.search);
   const orderStatus = (urlParams.get("orderStatus")) ? urlParams.get("orderStatus") : 'placed'
   const supplyStatus = (urlParams.get("supply_status")) ? urlParams.get("supply_status") : 0
@@ -62,7 +62,7 @@ const OrderList = () => {
     fetchData();
   }, []);
 
-  const status = ["placed", "completed", "cancelled", "partial_supply", "Completetd"];
+  const status = ["placed", "completed", "cancelled", "partial_supply"];
   const supplierStatus = ["no","yes"];
   
   let columns = [];
