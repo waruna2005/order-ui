@@ -3,7 +3,7 @@ import {
   Row,
   Card,
   Layout,
-
+  Button
 } from "antd";
 
 import React, { useEffect } from "react";
@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { fetchProduct} from "./productSlice";
 import { baseUrl } from "../../config/config";
+import { v4 as uuidv4 } from 'uuid';
+import { createCart } from "../order/orderSlice";
 
 const { Content } = Layout;
 const ProductView = () => {
@@ -39,6 +41,8 @@ const ProductView = () => {
   );
 
   let productName = selectedProduct ?  selectedProduct.productName : "";
+  let productSyscoID = selectedProduct ?  selectedProduct.productSyscoID : "";
+  let supplierSyscoID = selectedProduct ?  selectedProduct.supplierSyscoID : "";
   let productDescription = selectedProduct ?  selectedProduct.productDescription : "";
   let productMeasuringUnit = selectedProduct ?  selectedProduct.productMeasuringUnit : "";
   let productPrice = selectedProduct ?  selectedProduct.productPrice : "";
@@ -46,7 +50,32 @@ const ProductView = () => {
   let supplierName = selectedProduct ?  selectedProduct.supplierName : "";
   let productImage = selectedProduct ?  selectedProduct.productImage : "";
 
+  const handleAddToCart = (productId, productName, productPrice, supplierSyscoID, supplierName) => {
+    let sessionId = localStorage.getItem("cart-id");
+    if (!sessionId) {
+      const uniqueId = uuidv4();
+      localStorage.setItem("cart-id",uniqueId);
+      sessionId = localStorage.getItem("cart-id");
+    } 
 
+    if (sessionId) {
+      let data = {
+        sessionID : sessionId,
+        productSyscoID: productId,
+        productName: productName,
+        quantity : 1,
+        price : productPrice
+      };
+      localStorage.setItem(productId+"-supplierName",supplierName);
+      localStorage.setItem(productId+"-supplierSyscoID",supplierSyscoID);
+
+      console.log(`Product with ID ${productId} added to cart`);
+      console.log(`Product with sessionId ${sessionId} added to cart`);
+
+      dispatch(createCart(data));
+      window.location.href = "/order/create"
+    }
+  };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -78,7 +107,15 @@ const ProductView = () => {
             <label htmlFor="productStatus">Product Status:&nbsp;&nbsp;</label>
             <span id="productStatus">{productStatus}</span><br/><br/>
 
-            <span><img style={{ width: '500px', height: '500px' }} src={(productImage === "no image" ? productImage : (baseUrl+"/uploads/"+productImage))} alt={productName} /></span>
+            <span><img style={{ width: '500px', height: '500px' }} src={(productImage === "no image" ? productImage : (baseUrl+"/uploads/"+productImage))} alt={productName} /></span><br/><br/>
+            <Button
+              style={{ width: "20%", fontSize: '16px' }}
+              type="primary"
+              htmlType="button"
+              onClick={() => handleAddToCart(productSyscoID, productName, productPrice, supplierSyscoID, supplierName)}
+          >
+              Add To Cart
+          </Button>
           </div>
         </Card>
       </Content>

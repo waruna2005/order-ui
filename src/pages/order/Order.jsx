@@ -72,6 +72,10 @@ const Order = () => {
       sorter: (a, b) => a.price.length - b.price.length,
     },
     {
+      title: "Supply Status",
+      dataIndex: "supplyStatus"
+    },
+    {
       title: "Quantity",
       key: "quantity",
       render: (_, record) => (
