@@ -9,7 +9,8 @@ import {
   Layout,
   DatePicker,
   Table, 
-  Space
+  Space,
+  Modal
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
