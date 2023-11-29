@@ -177,7 +177,22 @@ const Order = () => {
         deliveryDate : values.deliveryDate,
         orderStatus : values.orderStatus
       };
-      await dispatch(updateOrder(orderId, updateData));
+
+      if (values.orderStatus == "cancelled") {
+          Modal.confirm({
+            title: 'Confirm',
+            content: 'Are you sure you want to cancel this order?',
+            onOk: async () => {
+                await dispatch(updateOrder(orderId, updateData));
+            },
+            onCancel: () => {
+                // Handle cancel if needed
+            },
+        });
+      } else {
+        await dispatch(updateOrder(orderId, updateData));
+      }
+
     } else {
 
       let orderItem = [];
@@ -211,6 +226,9 @@ const Order = () => {
       await dispatch(createOrder(sessionId,orderData));
     }
   };
+
+
+
 
   const _removeCartItem = (id) => {
     dispatch(deleteCart(id, sessionId));
